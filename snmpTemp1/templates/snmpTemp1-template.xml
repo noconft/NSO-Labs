@@ -9,12 +9,13 @@
       -->
       <name>{/device}</name>
       <config>
-        <!--
-            Add device-specific parameters here.
-            In this skeleton the service has a leaf "dummy"; use that
-            to set something on the device e.g.:
-            <ip-address-on-device>{/dummy}</ip-address-on-device>
-        -->
+        <snmp-server xmlns="urn:ios">
+          <community>
+            <name>{/comm-str}</name>
+            <RO when="{starts-with(access, 'ro')}"/>
+            <RW when="{starts-with(access, 'rw')}"/>
+          </community>
+        </snmp-server>
       </config>
     </device>
   </devices>

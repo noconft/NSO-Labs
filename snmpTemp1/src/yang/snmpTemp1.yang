@@ -8,27 +8,36 @@ module snmpTemp1 {
   import tailf-ncs {
     prefix ncs;
   }
+  import tailf-common {
+    prefix tailf;
+  }
 
   list snmpTemp1 {
-    key name;
+    key comm-str;
 
     uses ncs:service-data;
     ncs:servicepoint "snmpTemp1";
 
-    leaf name {
+    leaf comm-str {
+      tailf:info "snmp-server community-string";
       type string;
     }
 
-    // may replace this with other ways of refering to the devices.
-    leaf-list device {
+    // changed from leaf-list to leaf as we're only selecting one device for now
+    leaf device {
+      tailf:info "Pick any one IOS device";
       type leafref {
         path "/ncs:devices/ncs:device/ncs:name";
       }
     }
 
     // replace with your own stuff here
-    leaf dummy {
-      type inet:ipv4-address;
-    }
-  }
+    leaf access {
+      tailf:info "Specify ro or rw";
+      type enumeration {
+        enum ro;
+        enum rw;
+      }
+    } // leaf access
+  } // list snmpTemp1
 }
