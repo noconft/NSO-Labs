@@ -1,0 +1,43 @@
+module snmpTemp5 {
+  namespace "http://com/example/snmpTemp5";
+  prefix snmpTemp5;
+
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import tailf-ncs {
+    prefix ncs;
+  }
+  import tailf-common {
+    prefix tailf;
+  }
+
+  list snmpTemp5 {
+    key comm-str;
+
+    uses ncs:service-data;
+    ncs:servicepoint "snmpTemp5";
+
+    leaf comm-str {
+      tailf:info "snmp-server community-string";
+      type string;
+    }
+
+    // may replace this with other ways of refering to the devices.
+    leaf-list device {
+      tailf:info "Select IOS, IOSXR and/or JunOS. No other OSs are currently supported";
+      type leafref {
+        path "/ncs:devices/ncs:device/ncs:name";
+      }
+    }
+
+    // replace with your own stuff here
+    leaf access {
+      tailf:info "Specify ro or rw";
+      type enumeration {
+        enum ro;
+        enum rw;
+      }
+    } //leaf access
+  } // list snmpTemp5
+}

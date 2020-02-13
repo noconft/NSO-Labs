@@ -1,0 +1,36 @@
+<config-template xmlns="http://tail-f.com/ns/config/1.0"
+                 servicepoint="snmpTemp5">
+  <devices xmlns="http://tail-f.com/ns/ncs">
+    <device>
+      <name>{/device}</name>
+      <config tags="merge">
+        <!-- ... IOS ... -->
+        <snmp-server xmlns="urn:ios">
+          <community>
+            <name>{/comm-str}</name>
+            <RO when="{starts-with(access, 'ro')}"/>
+            <RW when="{starts-with(access, 'rw')}"/>
+          </community>
+        </snmp-server>
+        <!-- ... IOSXR ... -->
+        <snmp-server xmlns="http://tail-f.com/ned/cisco-ios-xr">
+          <community>
+            <name>{/comm-str}</name>
+            <RO when="{starts-with(access, 'ro')}"/>
+            <RW when="{starts-with(access, 'rw')}"/>
+          </community>
+        </snmp-server>
+        <!-- ... JunOS ... -->
+        <configuration xmlns="http://xml.juniper.net/xnm/1.1/xnm">
+          <snmp>
+            <community>
+              <name>{/comm-str}</name>
+              <authorization when="{starts-with(access, 'ro')}">read-only</authorization>
+              <authorization when="{starts-with(access, 'rw')}">read-write</authorization>
+            </community>
+          </snmp>
+        </configuration>
+      </config>
+    </device>
+  </devices>
+</config-template>
