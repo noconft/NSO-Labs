@@ -1,0 +1,52 @@
+module snmpPyTemp3 {
+
+  namespace "http://example.com/snmpPyTemp3";
+  prefix snmpPyTemp3;
+
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import tailf-common {
+    prefix tailf;
+  }
+  import tailf-ncs {
+    prefix ncs;
+  }
+
+  description
+    "Bla bla...";
+
+  revision 2016-01-01 {
+    description
+      "Initial revision.";
+  }
+
+  list snmpPyTemp3 {
+    description "This is an RFS skeleton service";
+
+    key comm-str;
+    leaf comm-str {
+      tailf:info "snmp-server community-string";
+      type string;
+    }
+
+    uses ncs:service-data;
+    ncs:servicepoint snmpPyTemp3-servicepoint;
+
+    // may replace this with other ways of refering to the devices.
+    leaf-list device {
+      type leafref {
+        path "/ncs:devices/ncs:device/ncs:name";
+      }
+    }
+
+    // replace with your own stuff here
+    leaf access {
+      tailf:info "Specify ro or rw";
+      type enumeration {
+        enum ro;
+        enum rw;
+      }
+    } // leaf access
+  } // list snmpTemp3
+} // module
