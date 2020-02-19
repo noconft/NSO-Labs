@@ -2,4 +2,4 @@ cisco-ios-cli-3.8
 cisco-iosxr-cli-3.5
 cisco-nx-cli-3.0
 juniper-junos-nc-3.0
-load-dir
+./load-dir
