@@ -1,0 +1,106 @@
+module geoPysnmp {
+
+  namespace "http://example.com/geoPysnmp";
+  prefix geoPysnmp;
+
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import tailf-common {
+    prefix tailf;
+  }
+  import tailf-ncs {
+    prefix ncs;
+  }
+
+  organization
+    "Cisco Systems, tail-f americas sales";
+
+  contact
+    "Gregg Schudel (gschudel@cisco.com)";
+
+  description
+    "Lab 2 - add _geoCatalog_ as an example to show holding data outside service, to be made available to the service...";
+
+  revision 2018-02-26 {
+    description
+      "Initial revision.";
+  }
+
+/*....................................................
+..  Geo Catalog here  ..
+.....................................................*/
+
+  // cdb entries outside the service based on geoloc...
+  // certain parameters are applicable to associated devices
+
+  list GeoCatalog {
+    key timeZone;
+
+    leaf timeZone {
+      tailf:info "geoloc timezone";
+      type enumeration {
+        enum PST;          
+        enum MST;
+        enum CST;
+        enum EST;
+      }
+    }
+    leaf domainName {
+      tailf:info "ip domain-name";
+      default bigtelco.com;
+      type string;
+    }
+    leaf-list nameServer {
+      tailf:info "name-server ip";
+      min-elements 2;
+      max-elements 2;
+      type inet:ip-address;
+    }
+    leaf-list ntpServer {
+      tailf:info "ntp server ip";
+      min-elements 2;
+      max-elements 2;
+      type inet:ip-address;
+    }
+    leaf snmpCommRO {
+      tailf:info "snmp server RO community";
+      type string;
+    }
+    leaf snmpCommRW {
+      tailf:info "snmp server RW community";
+      type string;
+    }
+  } // list GeoCatalog
+
+/*....................................................
+..  Service Model  ..
+.....................................................*/
+
+  list geoPysnmp {
+    description "This is a demonstration model using a separate database structure for services data";
+ 
+    key name;
+    leaf name {
+      tailf:info "unique ID string";
+      type string;
+    }
+ 
+    uses ncs:service-data;
+    ncs:servicepoint geoPysnmp-servicepoint;
+ 
+    // may replace this with other ways of refering to the devices.
+    leaf-list device {
+      type leafref {
+        path "/ncs:devices/ncs:device/ncs:name";
+      }
+    }
+    leaf localTZ {
+      tailf:info "Specify the TZ for the device(s)";
+      type leafref {
+        path "../../GeoCatalog/timeZone";
+      }
+    } // leaf localTZ 
+  } // list geoPysnmp
+ 
+} // module
