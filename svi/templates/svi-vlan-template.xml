@@ -1,0 +1,64 @@
+<config-template xmlns="http://tail-f.com/ns/config/1.0" servicepoint="svi-servicepoint">
+  <devices xmlns="http://tail-f.com/ns/ncs">
+    <device>
+      <name>{/device/name}</name>
+      <config>
+        <!-- IOS -->
+        <vlan xmlns="urn:ios">
+          <vlan-list>
+            <id>{$VLAN-ID}</id>
+          </vlan-list>
+        </vlan>
+        <?foreach {interface}?>
+        <interface xmlns="urn:ios">
+          <?if {intf-type='FastEthernet'}?>
+          <FastEthernet>
+            <name>{intf-id}</name>
+            <switchport>
+              <access>
+                <vlan>{$VLAN-ID}</vlan>
+              </access>
+              <mode>
+                <access/>
+              </mode>
+            </switchport>
+          </FastEthernet>
+          <?end?>
+          <?if {intf-type='GigabitEthernet'}?>
+          <GigabitEthernet>
+            <name>{intf-id}</name>
+            <switchport>
+              <access>
+                <vlan>{$VLAN-ID}</vlan>
+              </access>
+              <mode>
+                <access/>
+              </mode>
+            </switchport>
+          </GigabitEthernet>
+          <?end?>
+        </interface>
+        <?end?>
+        <!-- NX-OS -->
+        <vlan xmlns="http://tail-f.com/ned/cisco-nx">
+          <vlan-list>
+            <id>{$VLAN-ID}</id>
+          </vlan-list>
+        </vlan>
+        <?foreach {interface}?>
+        <interface xmlns="http://tail-f.com/ned/cisco-nx">
+          <Ethernet>
+            <name>{intf-id}</name>
+            <switchport>
+              <access>
+                <vlan>{$VLAN-ID}</vlan>
+              </access>
+              <mode>access</mode>
+            </switchport>
+          </Ethernet>
+        </interface>
+        <?end?>
+      </config>
+    </device>
+  </devices>
+</config-template>
