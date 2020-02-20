@@ -46,7 +46,7 @@ class ServiceCallbacks(Service):
         snmpRW = root.GeoCatalog[localTZ].snmpCommRW
         self.log.debug('snmpRO: ' , snmpRO , ' snmpRW: ' , snmpRW)
         #..
-        #..ok, now we hve everyone, let's write data out to devices..
+        #..ok, now we have everyone, let's write data out to devices..
         #..walk through all the devices (leaf-list)..
         for i , dev in enumerate(service.device):
             self.log.debug('dev: ' , i , ' name: ' , dev)
@@ -55,9 +55,9 @@ class ServiceCallbacks(Service):
             geoVars.add('ACCESS' , 'ro')
             template.apply('geoPysnmp-template' , geoVars)
             geoVars.add('COMMUNITY' , snmpRW)
-            geoVars.add('ACCESS' 'rw')
+            geoVars.add('ACCESS' , 'rw')
             template.apply('geoPysnmp-template' , geoVars)
-            geoVars.add('DOMNME' , domName)
+            geoVars.add('DOMNAME' , domName)
             template.apply('geoPysnmp-template' , geoVars)
             for dsrv in nameServers:
                 geoVars.add('DNSIP' , dsrv)
