@@ -1,0 +1,82 @@
+<config-template xmlns="http://tail-f.com/ns/config/1.0"
+                 servicepoint="eBGPlab">
+  <devices xmlns="http://tail-f.com/ns/ncs">
+    <!-- Left config for IOS -->
+    <device>
+      <name>{/left/device}</name>
+      <config>
+          <router xmlns="urn:ios">
+           <bgp>
+             <as-no>{/left/asn}</as-no>
+             <bgp>
+               <router-id>{/left/left_ip}</router-id>
+               <log-neighbor-changes/>
+             </bgp>
+             <neighbor>
+               <id>{/right/right_ip}</id>
+               <remote-as>{/right/asn}</remote-as>
+               <password>
+                 <text>{[/password]}</text>
+               </password>
+               <update-source>
+                 <GigabitEthernet>2</GigabitEthernet>
+               </update-source>
+             </neighbor>
+           </bgp>
+         </router>
+      </config>
+    </device>
+    <!-- Left config for IOS-XR -->
+    <device>
+      <name>{/left/device}</name>
+      <config>
+        <router xmlns="http://tail-f.com/ned/cisco-ios-xr">
+          <bgp>
+            <bgp-no-instance>
+              <id>{/left/asn}</id>
+              <bgp>
+                <router-id>{/left/left_ip}</router-id>
+              </bgp>
+              <address-family>
+                <ipv4>
+                  <unicast/>
+                </ipv4>
+              </address-family>
+              <neighbor>
+                <id>{/right/right_ip}</id>
+                <remote-as>300</remote-as>
+                <password>
+                  <enc-type>clear</enc-type>
+                  <password>FOO</password>
+                </password>
+                <address-family>
+                  <ipv4>
+                    <unicast>
+                      <route-policy>
+                        <direction>in</direction>
+                        <name>PASS</name>
+                      </route-policy>
+                      <route-policy>
+                        <direction>out</direction>
+                        <name>PASS</name>
+                      </route-policy>
+                    </unicast>
+                  </ipv4>
+                </address-family>
+              </neighbor>
+            </bgp-no-instance>
+          </bgp>
+        </router>
+      </config>
+    </device>
+    
+    <!-- Right config for IOS -->
+    <device>
+      <name>{/right/device}</name>
+      <config>
+        <!-- Right config for IOS -->
+        <!-- Right config for IOS-XR -->      
+      </config>
+    </device>
+  </devices>
+</config-template>

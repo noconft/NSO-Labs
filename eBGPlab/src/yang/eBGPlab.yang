@@ -1,0 +1,73 @@
+module eBGPlab {
+  namespace "http://com/example/eBGPlab";
+  prefix eBGPlab;
+
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import tailf-ncs {
+    prefix ncs;
+  }
+  import tailf-common { prefix tailf; }
+
+  list eBGPlab {
+    key name;
+
+    uses ncs:service-data;
+    ncs:servicepoint "eBGPlab";
+
+    leaf name {
+      tailf:info "Unique id/name";
+      tailf:cli-expose-key-name; // makes name appear at cli
+      type string;
+    }
+    // common configs
+
+    leaf password {
+      tailf:info "BGP neighbor password";
+      type string;
+    }
+
+    container left {
+      tailf:info "Config inputs for left side ios xr device";
+      tailf:cli-flatten-container;
+      /*.. bgp info ..*/
+      leaf asn {
+        tailf:info "BGP AS number";
+        type uint16;
+      }
+      leaf left_ip {
+        tailf:info "Neighbor's IP address";
+        type inet:ipv4-address;
+      }
+      /*.. device info ..*/
+      leaf device {
+        tailf:info "Left device";
+        type leafref {
+          path "/ncs:devices/ncs:device/ncs:name";
+        }
+      }
+    } // container left
+
+    container right {
+      tailf:info "Config inputs for right ios device";
+      tailf:cli-flatten-container;
+      /*.. bgp info ..*/
+      leaf asn {
+        tailf:info "BGP AS number";
+        type uint16;
+      }
+      leaf right_ip {
+        tailf:info "Neighbor's IP address";
+        type inet:ipv4-address;
+      }
+      /*.. device info ..*/
+      leaf device {
+        tailf:info "Right device";
+        type leafref {
+          path "/ncs:devices/ncs:device/ncs:name";
+        }
+      }
+    } // container right
+  } // list eBGPlab
+} // module
