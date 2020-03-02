@@ -16,7 +16,7 @@
                <id>{/right/right_ip}</id>
                <remote-as>{/right/asn}</remote-as>
                <password>
-                 <text>{[/password]}</text>
+                 <text>{/password}</text>
                </password>
                <update-source>
                  <GigabitEthernet>2</GigabitEthernet>
